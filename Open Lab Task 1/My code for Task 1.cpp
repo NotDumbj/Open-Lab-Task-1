@@ -7,6 +7,7 @@ using namespace std;
 int main()
 {
 	int book_counter = 0, day_limit = 30;
+	int bookissuedate = 0;
 	char garbage;
 	int cont, day, month, year;
 	string user_name, book_name, book_namec;
@@ -20,9 +21,9 @@ int main()
 		cout << "Enter Current Date (format: dd/mm/yy) = ";
 		cin >> day >> garbage >> month >> garbage >> year;
 
-		string book_issuedate;
 		int todaydate = day + (month * 30);
-		int duedate = 30 + todaydate;
+		string book_issuedate;
+		int duedate = 30 + bookissuedate;
 
 		cout << "\n\nBAHRIA LIBRARY SYSTEM\n\n";
 		cout << "-------Welcome-------";        // user interface
@@ -40,14 +41,20 @@ int main()
 			cout << "\n                > After that book need to be returned or re-borrowed";
 			cout << "\n                > Student can issue only 1 book at a time";
 			cout << "\n\nBook Borrowed = " << book_counter;
-			if (book_counter <= 1)
+			if (book_counter == 0)
 			{
 				cout << "\nType book name to issue (lowercase only) : ";      //book issuance
 				cin.ignore();
 				getline(cin, book_name);
+				bookissuedate = todaydate;
 				string book_issuedate = to_string(day) + " - " + to_string(month) + " - " + to_string(year);
 				cout << "\nThe Book \"" << book_name << "\" has been issued to " << user_name << endl;
 				book_counter++;
+				cout << "Thanks For Using Our Service\n\n";
+			}
+			else
+			{
+				cout << "\nYou already have book issued\n\n";
 			}
 		}
 		else if (choice == 1)
@@ -56,20 +63,28 @@ int main()
 			if (book_counter != 0)
 			{
 				cout << "\nType Name of the Book You Want to Return (lowercase only) : ";
-				cin >> book_namec;
-				cout << "Book Issuance Date : " << book_issuedate;
-				cout << "\nThanks for returning";
-				// logic for printing fine
-				if (todaydate > duedate)
+				cin.ignore();
+				getline(cin, book_namec);
+				if (book_namec == book_name)
 				{
-					int fine = (todaydate - duedate) * 1;
-					cout << "\nYou have passed the due date\nYour Fine : " << fine;
+					cout << "\nThanks for returning\n\n";
+					book_counter--;
+					// logic for printing fine
+					if (todaydate > duedate)
+					{
+						int fine = (todaydate - duedate) * 1;
+						cout << "\nYou have passed the due date\nYour Fine : " << fine << " $\n\n";
+					}
+					else "Returned in time\n\n";
 				}
-				else "Returned in time";
+				else
+				{
+					cout << "\nWrong Book Name\n\n";
+				}
 			}
 			else
 			{
-				cout << "You don't have any books to return";
+				cout << "You don't have any books to return\n\n";
 			}
 		}
 		else if (choice == 2)
